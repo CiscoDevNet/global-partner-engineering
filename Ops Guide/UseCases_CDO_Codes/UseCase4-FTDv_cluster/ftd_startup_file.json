@@ -1,0 +1,15 @@
+{
+	"Hostname": "${ftd_hostname}",
+	"ManageLocally":  "No",
+	"AdminPassword": "${ftd_admin_password}",
+	"FmcRegKey": "${fmc_reg_key}",
+	"FmcNatId": "${fmc_nat_id}",
+	"FmcIp": "${fmc_hostname}",
+	"IPv6Mode": "disabled",
+	"Cluster":{
+		"CclSubnetRange":"10.0.2.4 10.0.2.20",
+		"ClusterGroupName":"${cluster_name}",
+		"Geneve":"Yes",
+		"HealthProbePort":"7777"
+		}
+}
