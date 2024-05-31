@@ -1,9 +1,9 @@
-import Dnac_auth
+import CatalystCenter_auth
 from pprint import pprint
 
 
 def get_data():
-    """ Get all alarms from DNAC
+    """ Get all alarms from catalyst center
 
     params:   None
     
@@ -49,7 +49,7 @@ def get_data():
 
     """
     result = []
-    data = Dnac_auth.get_data(uri="/dna/intent/api/v1/issues")["response"]
+    data = CatalystCenter_auth.get_data(uri="/dna/intent/api/v1/issues")["response"]
     for item in data:
         if(item["status"]!="active"):
             continue
@@ -57,13 +57,13 @@ def get_data():
         "entity_type": "issue_id",
         "entity_value": item["issueId"]
         }
-        tmp = Dnac_auth.get_data(uri="/dna/intent/api/v1/issue-enrichment-details", header=query)
+        tmp = CatalystCenter_auth.get_data(uri="/dna/intent/api/v1/issue-enrichment-details", header=query)
         for i in tmp['issueDetails']['issue']:
             query = {
                 "searchBy": i["deviceId"],
                 "identifier": "uuid"
             }
-            detailData = Dnac_auth.get_data(uri="/dna/intent/api/v1/device-detail", query=query)['response']
+            detailData = CatalystCenter_auth.get_data(uri="/dna/intent/api/v1/device-detail", query=query)['response']
             i["issueSeverity"] = i["issueSeverity"].lower()
             if(i["issueSeverity"]=='high'):
                 i["issueSeverity"] = "major"
@@ -71,7 +71,7 @@ def get_data():
                 i["issueSeverity"] = "moderate"
             elif(i["issueSeverity"]=='minor'):
                 i["issueSeverity"] = "warning"
-            result.append({"severity":i["issueSeverity"], "summary": i["issueName"], "name": detailData["nwDeviceName"], "url": Dnac_auth.BASE_URL + "/dna/assurance/dashboards/issues-events/issues/open" })
+            result.append({"severity":i["issueSeverity"], "summary": i["issueName"], "name": detailData["nwDeviceName"], "url": CatalystCenter_auth.BASE_URL + "/dna/assurance/dashboards/issues-events/issues/open" })
     return result
 
 if __name__ == "__main__":

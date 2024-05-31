@@ -1,4 +1,4 @@
-import Dnac_auth
+import CatalystCenter_auth
 from pprint import pprint
 
 
@@ -15,18 +15,18 @@ fiveTuple = [
 
 def do_pathtrace():
    for item in fiveTuple:
-      data=Dnac_auth.post_data(uri="/dna/intent/api/v1/flow-analysis",body=item)
+      data=CatalystCenter_auth.post_data(uri="/dna/intent/api/v1/flow-analysis",body=item)
       pprint(data)
 
 def get_pathtracehistory():
-   data = Dnac_auth.get_data(uri="/dna/intent/api/v1/flow-analysis")["response"]
+   data = CatalystCenter_auth.get_data(uri="/dna/intent/api/v1/flow-analysis")["response"]
    for item in data:
       if(item["status"]=="COMPLETED"):
         return(item["id"])
 
 def get_pathtracedetails():
    uri = "/dna/intent/api/v1/flow-analysis/" + get_pathtracehistory()
-   data = Dnac_auth.get_data(uri=uri)["response"]
+   data = CatalystCenter_auth.get_data(uri=uri)["response"]
    pprint(data)
 
 

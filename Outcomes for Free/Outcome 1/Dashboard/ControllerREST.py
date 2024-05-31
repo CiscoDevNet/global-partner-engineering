@@ -1,10 +1,10 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify
 import vManageAlarms
 import vManageHealth
-import DnacHealth
-import DnacAppHealth
+import CatalystCenterHealth
+import CatalystCenterAppHealth
 import vManageNWPI_readTrace
-import DnacAlarms
+import CatalystCenterAlarms
 
 app = Flask(__name__)
 
@@ -16,15 +16,15 @@ def get_data():
     """
     data = { 
         "vManageHealth": vManageHealth.get_data(),
-        "DnacHealth" : DnacHealth.get_data(),
+        "DnacHealth" : CatalystCenterHealth.get_data(),
         "vManageNWPI_readTrace" : vManageNWPI_readTrace.get_data(),
-        "DnacAppHealth": DnacAppHealth.get_data(),
+        "DnacAppHealth": CatalystCenterAppHealth.get_data(),
         "vManageAlarms": vManageAlarms.get_data(),
-        "DnacAlarms": DnacAlarms.get_data()
+        "DnacAlarms": CatalystCenterAlarms.get_data()
         }
     
     return jsonify({'data': data})
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5555, debug=True)
+    app.run(host='0.0.0.0', port=5556, debug=True)

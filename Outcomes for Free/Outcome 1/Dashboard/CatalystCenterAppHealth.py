@@ -1,4 +1,4 @@
-import Dnac_auth
+import CatalystCenter_auth
 from pprint import pprint
 
  
@@ -47,14 +47,14 @@ def get_data():
     """
     result = []
     siteid=[]
-    tmp = Dnac_auth.get_data(uri="/dna/intent/api/v1/site")['response']
+    tmp = CatalystCenter_auth.get_data(uri="/dna/intent/api/v1/site")['response']
     for item in tmp:
         siteid.append(item["id"])
     for item in siteid:
         query = {
             "siteId": item
         }
-        tmp = Dnac_auth.get_data(uri="/dna/intent/api/v1/application-health", query=query)['response']
+        tmp = CatalystCenter_auth.get_data(uri="/dna/intent/api/v1/application-health", query=query)['response']
         for item2 in tmp:
             if(item2["health"]!=None):
                 if(item2["health"]<8):
@@ -66,7 +66,7 @@ def get_data():
                         item2["jitter"] = round(item2["jitter"])
 
 
-                    result.append({"name":item2["name"],"events": "health: " +str(item2["health"])+ ", packetLossPercent: "+str(item2["packetLossPercent"]) + ", networkLatency: "+str(item2["networkLatency"])+ ", Jitter: "+ str(item2["jitter"]) , "url": Dnac_auth.BASE_URL + "/dna/assurance/application/details?id="+item2["name"]+"&siteId="+item, "health":"critical"})
+                    result.append({"name":item2["name"],"events": "health: " +str(item2["health"])+ ", packetLossPercent: "+str(item2["packetLossPercent"]) + ", networkLatency: "+str(item2["networkLatency"])+ ", Jitter: "+ str(item2["jitter"]) , "url": CatalystCenter_auth.BASE_URL + "/dna/assurance/application/details?id="+item2["name"]+"&siteId="+item, "health":"critical"})
     return result
 
 if __name__ == "__main__":
