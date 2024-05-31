@@ -1,4 +1,4 @@
-# GPRS-MSP-Dashboard
+# Outcomes for Free - Outcome 2
 
 This repository will hold the code for the outcome2
 
