@@ -1,4 +1,4 @@
-# GPRS-MSP-Dashboard
+# Outcomes for Free - Outcome 1
 
 This repository will hold the code for the MSP Dashboard : https://charts.mongodb.com/charts-global-msp-noc-vktwd/public/dashboards/9aaa143d-2ec9-44a1-a4e2-44dee0a18c64 
 
