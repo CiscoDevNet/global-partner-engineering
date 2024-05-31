@@ -1,12 +1,9 @@
 """
-Copyright (c) 2021 Cisco and/or its affiliates.
-
+Copyright (c) 2024 Cisco and/or its affiliates.
 This software is licensed to you under the terms of the Cisco Sample
 Code License, Version 1.1 (the "License"). You may obtain a copy of the
 License at
-
-               https://developer.cisco.com/docs/licenses
-
+https://developer.cisco.com/docs/licenses
 All use of the material herein must be in accordance with the terms of
 the License. All rights not expressly granted by the License are
 reserved. Unless required by applicable law or agreed to separately in
@@ -14,6 +11,10 @@ writing, software distributed under the License is distributed on an "AS
 IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
 or implied.
 """
+
+__author__ = "Joel Jose <joeljos@cisco.com>"
+__copyright__ = "Copyright (c) 2024 Cisco and/or its affiliates."
+__license__ = "Cisco Sample Code License, Version 1.1"
 
 import requests
 import json
@@ -85,9 +86,9 @@ def webex_webhook(request):
         msg = None
         if webhook['data']['personEmail'] != bot_email:
             user_email = webhook['data']['personEmail']
-            allowedlist = ["joeljos@cisco.com", "saaiyapp@cisco.com", "thunai@cisco.com","viyer@cisco.com","kumanil@cisco.com","achangar@cisco.com"]
+            allowedlist = ["user_email@email.com"]
             if(user_email not in allowedlist):
-                msg = "Sorry, access is not allowed. contact joeljos@cisco.com to request access."
+                msg = "Sorry, access is not allowed. contact user@email.com to request access."
                 if msg != None:
                     send_webex_post("https://webexapis.com/v1/messages",
                                     {"roomId": webhook['data']['roomId'], "markdown": msg})

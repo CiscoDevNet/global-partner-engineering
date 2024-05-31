@@ -1,5 +1,22 @@
+"""
+Copyright (c) 2024 Cisco and/or its affiliates.
+This software is licensed to you under the terms of the Cisco Sample
+Code License, Version 1.1 (the "License"). You may obtain a copy of the
+License at
+https://developer.cisco.com/docs/licenses
+All use of the material herein must be in accordance with the terms of
+the License. All rights not expressly granted by the License are
+reserved. Unless required by applicable law or agreed to separately in
+writing, software distributed under the License is distributed on an "AS
+IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+or implied.
+"""
+
+__author__ = "Joel Jose <joeljos@cisco.com>"
+__copyright__ = "Copyright (c) 2024 Cisco and/or its affiliates."
+__license__ = "Cisco Sample Code License, Version 1.1"
+
 import credentials
-#from openai import OpenAI
 import GPT
 import mongodb_auth
 from openai import AzureOpenAI
@@ -9,18 +26,16 @@ def semanticcheck(query,cachedquery,client):
     messages = [
         {
             "role": "system",
-            "content": "I am a helpful text classifier AI. I will help you determine if the queries are semantically similar or not."
+            "content": "I am a helpful text classifier AI. I will help you determine if the queries are semantically exactly the same or not."
         },
         {
             "role": "user",
-            "content": "Reply with only YES or NO. Given 2 queries asked by a customer, your task is to find out if they mean the same. Following are the queries, seperated by semicolon : " + query + " ; " + cachedquery
+            "content": "Reply with only YES or NO. Given 2 queries asked by a customer, your task is to find out if they mean exactly the same. Following are the queries, seperated by semicolon : " + query + " ; " + cachedquery
         }
     ]
 
     chat_completion = client.chat.completions.create(
-    #model="gpt-3.5-turbo", messages = messages, temperature = 0.1
-    #model="gpt-4-turbo-preview", messages = messages, temperature = 0
-    model="azuregpt35turbo", messages = messages, temperature = 0.1, max_tokens = 1000
+    model="azuregpt-4o", messages = messages, temperature = 0.1, max_tokens = 1000
     )
     #print(chat_completion.choices[0].message.content)
     if(chat_completion.choices[0].message.content == 'YES'):
@@ -56,8 +71,6 @@ def dbcheck(query, db, client):
 
 def queryme(query):
     OPENAI_API_KEY = credentials.openai_token
-    # Set up the OpenAI client
-    #client = OpenAI(api_key=OPENAI_API_KEY)
     client = AzureOpenAI(
     azure_endpoint = "https://openaigpts.openai.azure.com/", 
     api_key=credentials.azure_openai_token,  

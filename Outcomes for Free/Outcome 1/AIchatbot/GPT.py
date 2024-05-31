@@ -1,17 +1,24 @@
+"""
+Copyright (c) 2024 Cisco and/or its affiliates.
+This software is licensed to you under the terms of the Cisco Sample
+Code License, Version 1.1 (the "License"). You may obtain a copy of the
+License at
+https://developer.cisco.com/docs/licenses
+All use of the material herein must be in accordance with the terms of
+the License. All rights not expressly granted by the License are
+reserved. Unless required by applicable law or agreed to separately in
+writing, software distributed under the License is distributed on an "AS
+IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+or implied.
+"""
+
+__author__ = "Joel Jose <joeljos@cisco.com>"
+__copyright__ = "Copyright (c) 2024 Cisco and/or its affiliates."
+__license__ = "Cisco Sample Code License, Version 1.1"
+
 #from openai import OpenAI
 import credentials
 from openai import AzureOpenAI
-
-
-OPENAI_API_KEY = credentials.openai_token
-# Set up the OpenAI client
-#client = OpenAI(api_key=OPENAI_API_KEY)
-
-client = AzureOpenAI(
-  azure_endpoint = "https://openaigpts.openai.azure.com/", 
-  api_key=credentials.azure_openai_token,  
-  api_version="2024-02-15-preview"
-)
 
 
 def transformdata(all_data):
@@ -45,14 +52,18 @@ def transformdata(all_data):
     return all_data
 
 
-def queryme(data,db):
-    all_data = {}
-    for collection_name in db.list_collection_names():
-        collection = db[collection_name]
-        all_data[collection_name] = list(collection.find({}, {'_id': False}))
+def queryme(query,db):
+    db_data = {}
+    all_data = []
+    for dbentry in db:
+        for collection_name in dbentry.list_collection_names():
+            if(collection_name == 'maindb-semantic'):
+                continue
+            collection = dbentry[collection_name]
+            db_data[collection_name] = list(collection.find({}, {'_id': False}))
+    all_data.append(db_data)
     all_data = transformdata(all_data)
-    # Create a chat completion
-    query = data
+        # Create a chat completion
     messages = [
         {
             "role": "system",
@@ -64,17 +75,21 @@ def queryme(data,db):
         }
     ]
 
+    # find the prompt token length
+    prompt_length = int((len(str(messages))/4))
+    print("prompt token length is: ", prompt_length)
 
+    print("sending the prompt to the azuregtp4-o model")
+    client = AzureOpenAI(
+    azure_endpoint = "https://openaigpts.openai.azure.com/", 
+    api_key=credentials.azure_openai_token,  
+    api_version="2024-02-15-preview"
+    )
+    
     # Create a chat completion
     chat_completion = client.chat.completions.create(
-        #model="gpt-3.5-turbo", messages = messages, temperature = 0
-        #model="gpt-4-turbo-preview", messages = messages, temperature = 0, max_tokens = 1000,
-        model="azuregpt35turbo", messages = messages, temperature = 0.1, max_tokens = 1000
-
-
+        model="azuregpt-4o", messages = messages, temperature = 0.1, max_tokens = 1000
     )
 
     # Print the assistant's message
-    #print(messages[1],"\n", chat_completion.choices[0].message.content)
-    #print("\n", chat_completion.choices[0].message.content)
     return chat_completion.choices[0].message.content
