@@ -1,24 +1,8 @@
-"""
-Copyright (c) 2024 Cisco and/or its affiliates.
-This software is licensed to you under the terms of the Cisco Sample
-Code License, Version 1.1 (the "License"). You may obtain a copy of the
-License at
-https://developer.cisco.com/docs/licenses
-All use of the material herein must be in accordance with the terms of
-the License. All rights not expressly granted by the License are
-reserved. Unless required by applicable law or agreed to separately in
-writing, software distributed under the License is distributed on an "AS
-IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
-or implied.
-"""
-
-__author__ = "Joel Jose <joeljos@cisco.com>"
-__copyright__ = "Copyright (c) 2024 Cisco and/or its affiliates."
-__license__ = "Cisco Sample Code License, Version 1.1"
-
-#from openai import OpenAI
 import credentials
 from openai import AzureOpenAI
+from pprint import pprint
+
+
 
 
 def transformdata(all_data):
@@ -52,7 +36,20 @@ def transformdata(all_data):
     return all_data
 
 
-def queryme(query,db):
+def queryme(query, db):
+    """
+    Executes a query using the given database and returns the response.
+
+    Args:
+        query (str): The user query.
+        db (list): The list of database entries.
+
+    Returns:
+        str: The response to the user query.
+
+    Raises:
+        None
+    """
     db_data = {}
     all_data = []
     for dbentry in db:
@@ -62,12 +59,19 @@ def queryme(query,db):
             collection = dbentry[collection_name]
             db_data[collection_name] = list(collection.find({}, {'_id': False}))
     all_data.append(db_data)
+    #pprint(all_data)
     all_data = transformdata(all_data)
+    with open("datanotes.txt", "r") as file:
+        datanotes = file.read()
+    all_data = str(all_data) + ";" + datanotes
+    with open("runbook.txt", "r") as file:
+        runbook = file.read().replace('\n', ' ')
+        runbook = transformdata(runbook)
         # Create a chat completion
     messages = [
         {
             "role": "system",
-            "content": all_data + ". If the query cannot be answered with the dashboard data, politely mention that its not possible to answer with the dashboard data. Do not deviate from the dashboard data context and do not reply to any other unrelated queries."
+            "content": f"Dashboard Data : {all_data}. Answer the user query with the given Dashboard Data. If the query cannot be answered with the dashboard data, politely mention that its not possible to answer with the dashboard data. Do not deviate from the dashboard data context and do not reply to any other unrelated queries. If the query asks for troubleshooting steps, do not give the steps but instead mention that it will be provided based on the runbook information."
         },
         {
             "role": "user",
@@ -88,8 +92,35 @@ def queryme(query,db):
     
     # Create a chat completion
     chat_completion = client.chat.completions.create(
+        #model="azuregpt35turbo", messages = messages, temperature = 0.1, max_tokens = 1000
         model="azuregpt-4o", messages = messages, temperature = 0.1, max_tokens = 1000
     )
 
     # Print the assistant's message
-    return chat_completion.choices[0].message.content
+    #print(messages[1],"\n", chat_completion.choices[0].message.content)
+    #print("\n", chat_completion.choices[0].message.content)
+    response1 = chat_completion.choices[0].message.content
+
+
+    if(query.find("troubleshoot") != -1):
+        messages = [
+            {
+                "role": "system",
+                "content": "you are a helpful troubleshooting assistant"
+            },
+            {
+                "role": "user",
+                "content": f"Use this runbook information:'{runbook}' to provide any specific troubleshooting steps as applicable to the items mentioned in the Context : {response1}. Only mention the applicable troubleshooting steps from the runbook. If there are no runbook steps applicable, then mention 'No steps available in runbook for this'. Do not provide any steps outside of the given runbook."
+            }
+        ]
+
+        # Create a chat completion
+        chat_completion = client.chat.completions.create(
+            #model="azuregpt35turbo", messages = messages, temperature = 0.1, max_tokens = 1000
+            model="azuregpt-4o", messages = messages, temperature = 0.1, max_tokens = 1000
+        )
+        response2 = chat_completion.choices[0].message.content
+
+        return f"{response1} \n {response2}"
+    else:
+        return response1
