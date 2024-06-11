@@ -40,6 +40,9 @@ This repository will hold the code for the outcome2
 
 This is a Cross-Domain dashboard for displaying day 2 operations data from the Cisco Controllers.
 
+![image](https://github.com/CiscoDevNet/global-partner-engineering/assets/11584709/4a5ce275-49e1-47c2-9e21-ad0525a7291d)
+
+
 _Note : The steps here are only for a lab environment. There may be additional considerations like security, performance, scalability, maintainability..etc needed before production use._
 
 Recommended to use Python virtualenv for your python projects :
