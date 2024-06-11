@@ -1,4 +1,4 @@
-# Unified Dashboard for Cisco Solutions
+# AI enabled Outcomes - Outcome 2
 
 ## Overview
 This project aims to provide a unified dashboard that delivers three main outcomes: Alerting, Monitoring, and a GenAI interface. It utilizes data from Meraki, Umbrella, and ThousandEyes, and integrates with MongoDB Atlas. The primary goal is to offer pre-configured, ready-to-use solutions that remove the need to work with complex APIs across the Cisco portfolio. The outcomes are pre-tested and guaranteed to work, and the lifecycle of APIs through software versions is maintained.
@@ -34,9 +34,7 @@ This project aims to provide a unified dashboard that delivers three main outcom
 - **Database**: MongoDB Atlas
 
 
-## FOR DEVELOPERS :
-
-# AI enabled Outcomes - Outcome 2
+# AI enabled Outcomes - Outcome 2 - For Developers : 
 
 This repository will hold the code for the outcome2
 
