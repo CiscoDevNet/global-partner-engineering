@@ -13,9 +13,9 @@ This project aims to provide a unified dashboard that delivers three main outcom
 
 ### 2. Monitoring
 - **Modern Single-Pane-of-Glass Dashboard**:
- - **Alarms**: Aggregated alarms from Cisco Catalyst Center and SD-WAN.
- - **Network Health**: Network health aggregation from Cisco Catalyst Center and SD-WAN devices.
- - **Application Health**: Visibility into application flows with health issues flagged by Cisco Catalyst Center, SD-WAN, and ThousandEyes.
+ - **Alarms**: Aggregated alarms from Cisco Meraki, Cisco Umbrella and Cisco ThousandEyes.
+ - **Network Health**: Network health aggregation from Cisco Meraki devices, Cisco Umbrella tunnels and Cisco ThousandEyes agents.
+ - **Application Health**: Visibility into application flows with health issues flagged by Cisco Meraki and Cisco ThousandEyes.
 
 ### 3. GenAI Interface
 - **GPT-4 Powered Conversational Interface**: Interact with the dashboard using natural language through a GPT-4 powered conversational interface for AIOps.
@@ -36,7 +36,7 @@ This project aims to provide a unified dashboard that delivers three main outcom
 
 ## FOR DEVELOPERS :
 
-# Outcomes for Free - Outcome 2
+# AI enabled Outcomes - Outcome 2
 
 This repository will hold the code for the outcome2
 
