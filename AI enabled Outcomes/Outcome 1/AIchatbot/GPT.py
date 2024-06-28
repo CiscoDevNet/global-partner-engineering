@@ -36,20 +36,7 @@ def transformdata(all_data):
     return all_data
 
 
-def queryme(query, db):
-    """
-    Executes a query using the given database and returns the response.
-
-    Args:
-        query (str): The user query.
-        db (list): The list of database entries.
-
-    Returns:
-        str: The response to the user query.
-
-    Raises:
-        None
-    """
+def queryme(query,db):
     db_data = {}
     all_data = []
     for dbentry in db:
